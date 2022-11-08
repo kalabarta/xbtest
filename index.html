@@ -83,44 +83,17 @@
     <ul>
     <li><b>Regular targets:</b>
     <br>
-    {% if nregular_targets > 0 %}
-        {% for item in regular_target_list %}
-            <a href="{{ item["target_link"] }}"><nobr>{{ item["target_name"] }}</nobr></a>
-            {% if loop.index < nregular_targets %}
-            ,
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        None
-    {% endif %}
+    TESTING
     </li>
     <br>
     <li><b>Non-regular targets:</b>
     <br>
-    {% if nnonregular_targets > 0 %}
-        {% for item in nonregular_target_list %}
-            <a href="{{ item["target_link"] }}"><nobr>{{ item["target_name"] }}</nobr></a>
-            {% if loop.index < nnonregular_targets %}
-            ,
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        None
-    {% endif %}
+    TESTING
     </li>
     <br>
     <li><b>Inactive targets:</b>
     <br>
-    {% if ninactive_targets > 0 %}
-        {% for item in inactive_target_list %}
-            <a href="{{ item["target_link"] }}"><nobr>{{ item["target_name"] }}</nobr></a>
-            {% if loop.index < ninactive_targets %}
-            ,
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        None
-    {% endif %}
+    TESTING
     </li>
     </ul>
 
