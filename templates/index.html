@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>XB-NEWS: X-ray Binary New Early Warning System</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/datepicker.css">
+    <link rel="stylesheet" href="static/css/ladda-themeless.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <!--Include your brand here-->
+        <a class="navbar-brand" href="#">Home Page</a>
+    </div>
+</div>
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <div class="col-lg-6">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <table class="table table-condensed table-bordered">
+        <tbody>
+            <tr>
+            <td>Go to:</td>
+            <td>
+            {% if running == 1 %}
+                Pipeline Controller: <font color="Lime">Running</font>
+            {% else %}
+                <font color="Red"><h2>ATTENTION: The pipeline controller is NOT RUNNING!</h2></font>
+            {% endif %}
+            </td>
+            </tr>
+            <tr>
+            <td>Home Page</td>
+            <td><a href="pipeline">Pipeline Overview</a></td>
+            </tr>
+            <tr>
+            <td><a href="targets">Target List</a></td>
+            <td><a href="pipeline/failures">Pipeline Failures</a></td>
+            </tr>
+            <tr>
+            <td><a href="targets/download-matrix">Target Download-Matrix</a></td>
+            <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Example row of columns -->
+
+    <header><h2>Introduction:</h2></header>
+
+    <br>Welcome to the <b>X-ray Binary New Early Warning System (XB-NEWS)</b> pipeline webpages. These webpages provide a graphical interface
+        to the data processing and the output light curves. Full documentation for the XB-NEWS pipeline is available
+        <a href="https://github.com/danlegend5/xbnews/wiki">here</a>.
+    <br>
+    <br>The downloading of data by the XB-NEWS pipeline is driven by a <a href="targets">target list</a> that is split into active targets
+        (classed as either regular or non-regular) and inactive targets. The pipeline searches for data corresponding to active targets
+        in the <a href="https://archive.lco.global">Las Cumbres Observatory (LCO) archive</a> on a regular basis, and it immediately
+        downloads any new data that it finds. The pipeline does not search for data corresponding to inactive targets in the LCO archive.
+        All downloaded data that exist locally are reduced by the XB-NEWS pipeline, regardless of whether the corresponding target is
+        currently active or inactive, and the results are displayed on these webpages.
+    <br>
+    <br>Here are some quick links to our individual target webpages:
+    <br>
+    <br>
+    <ul>
+    <li><b>Regular targets:</b>
+    <br>
+    {% if nregular_targets > 0 %}
+        {% for item in regular_target_list %}
+            <a href="{{ item["target_link"] }}"><nobr>{{ item["target_name"] }}</nobr></a>
+            {% if loop.index < nregular_targets %}
+            ,
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        None
+    {% endif %}
+    </li>
+    <br>
+    <li><b>Non-regular targets:</b>
+    <br>
+    {% if nnonregular_targets > 0 %}
+        {% for item in nonregular_target_list %}
+            <a href="{{ item["target_link"] }}"><nobr>{{ item["target_name"] }}</nobr></a>
+            {% if loop.index < nnonregular_targets %}
+            ,
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        None
+    {% endif %}
+    </li>
+    <br>
+    <li><b>Inactive targets:</b>
+    <br>
+    {% if ninactive_targets > 0 %}
+        {% for item in inactive_target_list %}
+            <a href="{{ item["target_link"] }}"><nobr>{{ item["target_name"] }}</nobr></a>
+            {% if loop.index < ninactive_targets %}
+            ,
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        None
+    {% endif %}
+    </li>
+    </ul>
+
+
+    <footer>
+        <hr>
+        Web page generation performance:
+        <br>Data read: {{ t1 }} s 
+        <br>Data analysis: {{ t2 }} s
+        <br>
+        <hr>
+        <p><b>X-ray Binary New Early Warning System</b> (XB-NEWS; P.I.: <b>Dave Russell</b>) - Abu Dhabi, UAE</p>
+        <p>Created and programmed by <b><a href="http://www.danidl.co.uk/">Daniel Bramich</a></b> (dan.bramich@hotmail.co.uk)</p>
+        <hr>
+    </footer>
+</div>
+
+
+<!-- Javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/js/spin.min.js"></script>
+<script src="static/js/ladda.min.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="//code.jquery.com/jquery-1.11.3.min.js"><\/script>')</script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/jquery.navgoco.js"></script>
+<script src="static/js/bootstrap-datepicker.js"></script>
+<script src="static/js/main.js"></script>
+
+</body>
+</html>

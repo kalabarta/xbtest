@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>XB-NEWS: X-ray Binary New Early Warning System</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/datepicker.css">
+    <link rel="stylesheet" href="../static/css/ladda-themeless.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <!--Include your brand here-->
+        <a class="navbar-brand" href="#">Pipeline Failures Breakdown</a>
+    </div>
+</div>
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <div class="col-lg-6">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <table class="table table-condensed table-bordered">
+        <tbody>
+            <tr>
+            <td>Go to:</td>
+            <td>
+            {% if running == 1 %}
+                Pipeline Controller: <font color="Lime">Running</font>
+            {% else %}
+                <font color="Red"><h2>ATTENTION: The pipeline controller is NOT RUNNING!</h2></font>
+            {% endif %}
+            </td>
+            </tr>
+            <tr>
+            <td><a href="..">Home Page</a></td>
+            <td><a href="../pipeline">Pipeline Overview</a></td>
+            </tr>
+            <tr>
+            <td><a href="../targets">Target List</a></td>
+            <td>Pipeline Failures</td>
+            </tr>
+            <tr>
+            <td><a href="../targets/download-matrix">Target Download-Matrix</a></td>
+            <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Example row of columns -->
+
+    <header><h2>Pipeline Failures Breakdown:</h2></header>
+
+    <br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Bad Pixel Masks - Stage 1</div>
+        <div class="panel-body">
+
+            <b>Total number of frames: {{ mask_s1_nprocess + mask_s1_nsuccess + mask_s1_nfailed }}</b>
+            <br><font color="orange">To Be Processed</font> / <font color="green">Success</font> / <font color="red">Failed</font>:
+                <font color="orange">{{ mask_s1_nprocess }}</font> / <font color="green">{{ mask_s1_nsuccess }}</font> / <font color="red">{{ mask_s1_nfailed }}</font>
+            <br>
+            <br>
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                <tr>
+                <th align=left>Reason For Failure (*)</th>
+                <th align=left>Number Of Frames</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                <td>Failed To Remove Previous Reduction</td>
+                <td>{{ mask_s1_nfailed_to_remove_previous_reduction }} {% if mask_s1_nfailed_to_remove_previous_reduction > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed File Read</td>
+                <td>{{ mask_s1_nfailed_file_read }} {% if mask_s1_nfailed_file_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Header Keyword Read</td>
+                <td>{{ mask_s1_nfailed_header_keyword_read }} {% if mask_s1_nfailed_header_keyword_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Determine Pipeline</td>
+                <td>{{ mask_s1_nfailed_to_determine_pipeline }} {% if mask_s1_nfailed_to_determine_pipeline > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown BPM Pixel Values</td>
+                <td>{{ mask_s1_nunknown_bpm_pixel_values }} {% if mask_s1_nunknown_bpm_pixel_values > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Count Masked Pixels</td>
+                <td>{{ mask_s1_nfailed_to_count_masked_pixels }} {% if mask_s1_nfailed_to_count_masked_pixels > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create PNG Files</td>
+                <td>{{ mask_s1_nfailed_to_create_png_files }} {% if mask_s1_nfailed_to_create_png_files > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Reason For Failure</td>
+                <td>{{ mask_s1_nunknown_reason_for_failure }} {% if mask_s1_nunknown_reason_for_failure > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <b>* There should be no failures at Stage 1</b>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Master Bias Frames - Stage 1</div>
+        <div class="panel-body">
+
+            <b>Total number of frames: {{ masterbias_s1_nprocess + masterbias_s1_nsuccess + masterbias_s1_nfailed }}</b>
+            <br><font color="orange">To Be Processed</font> / <font color="green">Success</font> / <font color="red">Failed</font>:
+                <font color="orange">{{ masterbias_s1_nprocess }}</font> / <font color="green">{{ masterbias_s1_nsuccess }}</font> / <font color="red">{{ masterbias_s1_nfailed }}</font>
+            <br>
+            <br>
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                <tr>
+                <th align=left>Reason For Failure (*)</th>
+                <th align=left>Number Of Frames</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                <td>Failed To Remove Previous Reduction</td>
+                <td>{{ masterbias_s1_nfailed_to_remove_previous_reduction }} {% if masterbias_s1_nfailed_to_remove_previous_reduction > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed File Read</td>
+                <td>{{ masterbias_s1_nfailed_file_read }} {% if masterbias_s1_nfailed_file_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Header Keyword Read</td>
+                <td>{{ masterbias_s1_nfailed_header_keyword_read }} {% if masterbias_s1_nfailed_header_keyword_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Determine Pipeline</td>
+                <td>{{ masterbias_s1_nfailed_to_determine_pipeline }} {% if masterbias_s1_nfailed_to_determine_pipeline > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown BPM Pixel Values</td>
+                <td>{{ masterbias_s1_nunknown_bpm_pixel_values }} {% if masterbias_s1_nunknown_bpm_pixel_values > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Count Masked Pixels</td>
+                <td>{{ masterbias_s1_nfailed_to_count_masked_pixels }} {% if masterbias_s1_nfailed_to_count_masked_pixels > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed QC Computation</td>
+                <td>{{ masterbias_s1_nfailed_qc_computation }} {% if masterbias_s1_nfailed_qc_computation > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create PNG Files</td>
+                <td>{{ masterbias_s1_nfailed_to_create_png_files }} {% if masterbias_s1_nfailed_to_create_png_files > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Reason For Failure</td>
+                <td>{{ masterbias_s1_nunknown_reason_for_failure }} {% if masterbias_s1_nunknown_reason_for_failure > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <b>* There should be no failures at Stage 1</b>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Master Dark Frames - Stage 1</div>
+        <div class="panel-body">
+
+            <b>Total number of frames: {{ masterdark_s1_nprocess + masterdark_s1_nsuccess + masterdark_s1_nfailed }}</b>
+            <br><font color="orange">To Be Processed</font> / <font color="green">Success</font> / <font color="red">Failed</font>:
+                <font color="orange">{{ masterdark_s1_nprocess }}</font> / <font color="green">{{ masterdark_s1_nsuccess }}</font> / <font color="red">{{ masterdark_s1_nfailed }}</font>
+            <br>
+            <br>
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                <tr>
+                <th align=left>Reason For Failure (*)</th>
+                <th align=left>Number Of Frames</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                <td>Failed To Remove Previous Reduction</td>
+                <td>{{ masterdark_s1_nfailed_to_remove_previous_reduction }} {% if masterdark_s1_nfailed_to_remove_previous_reduction > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed File Read</td>
+                <td>{{ masterdark_s1_nfailed_file_read }} {% if masterdark_s1_nfailed_file_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Header Keyword Read</td>
+                <td>{{ masterdark_s1_nfailed_header_keyword_read }} {% if masterdark_s1_nfailed_header_keyword_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Determine Pipeline</td>
+                <td>{{ masterdark_s1_nfailed_to_determine_pipeline }} {% if masterdark_s1_nfailed_to_determine_pipeline > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown BPM Pixel Values</td>
+                <td>{{ masterdark_s1_nunknown_bpm_pixel_values }} {% if masterdark_s1_nunknown_bpm_pixel_values > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Count Masked Pixels</td>
+                <td>{{ masterdark_s1_nfailed_to_count_masked_pixels }} {% if masterdark_s1_nfailed_to_count_masked_pixels > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed QC Computation</td>
+                <td>{{ masterdark_s1_nfailed_qc_computation }} {% if masterdark_s1_nfailed_qc_computation > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create PNG Files</td>
+                <td>{{ masterdark_s1_nfailed_to_create_png_files }} {% if masterdark_s1_nfailed_to_create_png_files > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Reason For Failure</td>
+                <td>{{ masterdark_s1_nunknown_reason_for_failure }} {% if masterdark_s1_nunknown_reason_for_failure > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <b>* There should be no failures at Stage 1</b>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Master Flat Frames - Stage 1</div>
+        <div class="panel-body">
+
+            <b>Total number of frames: {{ masterflat_s1_nprocess + masterflat_s1_nsuccess + masterflat_s1_nfailed }}</b>
+            <br><font color="orange">To Be Processed</font> / <font color="green">Success</font> / <font color="red">Failed</font>:
+                <font color="orange">{{ masterflat_s1_nprocess }}</font> / <font color="green">{{ masterflat_s1_nsuccess }}</font> / <font color="red">{{ masterflat_s1_nfailed }}</font>
+            <br>
+            <br>
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                <tr>
+                <th align=left>Reason For Failure (*)</th>
+                <th align=left>Number Of Frames</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                <td>Failed To Remove Previous Reduction</td>
+                <td>{{ masterflat_s1_nfailed_to_remove_previous_reduction }} {% if masterflat_s1_nfailed_to_remove_previous_reduction > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed File Read</td>
+                <td>{{ masterflat_s1_nfailed_file_read }} {% if masterflat_s1_nfailed_file_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Header Keyword Read</td>
+                <td>{{ masterflat_s1_nfailed_header_keyword_read }} {% if masterflat_s1_nfailed_header_keyword_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Determine Pipeline</td>
+                <td>{{ masterflat_s1_nfailed_to_determine_pipeline }} {% if masterflat_s1_nfailed_to_determine_pipeline > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown BPM Pixel Values</td>
+                <td>{{ masterflat_s1_nunknown_bpm_pixel_values }} {% if masterflat_s1_nunknown_bpm_pixel_values > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Count Masked Pixels</td>
+                <td>{{ masterflat_s1_nfailed_to_count_masked_pixels }} {% if masterflat_s1_nfailed_to_count_masked_pixels > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Find Associated Master Flats</td>
+                <td>{{ masterflat_s1_nfailed_to_find_associated_master_flats }} {% if masterflat_s1_nfailed_to_find_associated_master_flats > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed QC Computation</td>
+                <td>{{ masterflat_s1_nfailed_qc_computation }} {% if masterflat_s1_nfailed_qc_computation > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create PNG Files</td>
+                <td>{{ masterflat_s1_nfailed_to_create_png_files }} {% if masterflat_s1_nfailed_to_create_png_files > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Reason For Failure</td>
+                <td>{{ masterflat_s1_nunknown_reason_for_failure }} {% if masterflat_s1_nunknown_reason_for_failure > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <b>* There should be no failures at Stage 1</b>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Raw Science Images - Stage 1</div>
+        <div class="panel-body">
+
+            <b>Total number of frames: {{ raw_s1_nprocess + raw_s1_nsuccess + raw_s1_nfailed }}</b>
+            <br><font color="orange">To Be Processed</font> / <font color="green">Success</font> / <font color="red">Failed</font>:
+                <font color="orange">{{ raw_s1_nprocess }}</font> / <font color="green">{{ raw_s1_nsuccess }}</font> / <font color="red">{{ raw_s1_nfailed }}</font>
+            <br>
+            <br>
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                <tr>
+                <th align=left>Reason For Failure (*)</th>
+                <th align=left>Number Of Frames</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                <td>Failed To Remove Previous Reduction</td>
+                <td>{{ raw_s1_nfailed_to_remove_previous_reduction }} {% if raw_s1_nfailed_to_remove_previous_reduction > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed File Read</td>
+                <td>{{ raw_s1_nfailed_file_read }} {% if raw_s1_nfailed_file_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Header Keyword Read</td>
+                <td>{{ raw_s1_nfailed_header_keyword_read }} {% if raw_s1_nfailed_header_keyword_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed QC Computation</td>
+                <td>{{ raw_s1_nfailed_qc_computation }} {% if raw_s1_nfailed_qc_computation > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create PNG Files</td>
+                <td>{{ raw_s1_nfailed_to_create_png_files }} {% if raw_s1_nfailed_to_create_png_files > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Reason For Failure</td>
+                <td>{{ raw_s1_nunknown_reason_for_failure }} {% if raw_s1_nunknown_reason_for_failure > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <b>* There should be no failures at Stage 1</b>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Reduced Science Images - Stage 1</div>
+        <div class="panel-body">
+
+            <b>Total number of frames: {{ reduced_s1_nprocess + reduced_s1_nsuccess + reduced_s1_nfailed }}</b>
+            <br><font color="orange">To Be Processed</font> / <font color="green">Success</font> / <font color="red">Failed</font>:
+                <font color="orange">{{ reduced_s1_nprocess }}</font> / <font color="green">{{ reduced_s1_nsuccess }}</font> / <font color="red">{{ reduced_s1_nfailed }}</font>
+            <br>
+            <br>
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                <tr>
+                <th align=left>Reason For Failure (*)</th>
+                <th align=left>Number Of Frames</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                <td>Failed To Remove Previous Reduction</td>
+                <td>{{ reduced_s1_nfailed_to_remove_previous_reduction }} {% if reduced_s1_nfailed_to_remove_previous_reduction > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Determine Pipeline</td>
+                <td>{{ reduced_s1_nfailed_to_determine_pipeline }} {% if reduced_s1_nfailed_to_determine_pipeline > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed File Read</td>
+                <td>{{ reduced_s1_nfailed_file_read }} {% if reduced_s1_nfailed_file_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Header Keyword Read</td>
+                <td>{{ reduced_s1_nfailed_header_keyword_read }} {% if reduced_s1_nfailed_header_keyword_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Saturation Level</td>
+                <td>{{ reduced_s1_nunknown_saturation_level }} {% if reduced_s1_nunknown_saturation_level > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Read Saturation Level</td>
+                <td>{{ reduced_s1_nfailed_to_read_saturation_level }} {% if reduced_s1_nfailed_to_read_saturation_level > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Pixel Scale Limits</td>
+                <td>{{ reduced_s1_nunknown_pixel_scale_limits }} {% if reduced_s1_nunknown_pixel_scale_limits > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Read Pixel Scale Limits</td>
+                <td>{{ reduced_s1_nfailed_to_read_pixel_scale_limits }} {% if reduced_s1_nfailed_to_read_pixel_scale_limits > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown BPM Pixel Values</td>
+                <td>{{ reduced_s1_nunknown_bpm_pixel_values }} {% if reduced_s1_nunknown_bpm_pixel_values > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Count Masked Pixels</td>
+                <td>{{ reduced_s1_nfailed_to_count_masked_pixels }} {% if reduced_s1_nfailed_to_count_masked_pixels > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed QC Computation</td>
+                <td>{{ reduced_s1_nfailed_qc_computation }} {% if reduced_s1_nfailed_qc_computation > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create PNG Files</td>
+                <td>{{ reduced_s1_nfailed_to_create_png_files }} {% if reduced_s1_nfailed_to_create_png_files > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Reason For Failure</td>
+                <td>{{ reduced_s1_nunknown_reason_for_failure }} {% if reduced_s1_nunknown_reason_for_failure > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <b>* There should be no failures at Stage 1</b>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Reduced Science Images - Stage 2</div>
+        <div class="panel-body">
+
+            <b>Total number of frames: {{ reduced_s2_nprocess + reduced_s2_nsuccess + reduced_s2_nfailed }}</b>
+            <br><font color="orange">To Be Processed</font> / <font color="green">Success</font> / <font color="red">Failed</font>:
+                <font color="orange">{{ reduced_s2_nprocess }}</font> / <font color="green">{{ reduced_s2_nsuccess }}</font> / <font color="red">{{ reduced_s2_nfailed }}</font>
+            <br>
+            <br>
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                <tr>
+                <th align=left>Reason For Failure</th>
+                <th align=left>Number Of Frames</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                <td>Failed At Stage 1 <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_at_stage_1 }} {% if reduced_s2_nfailed_at_stage_1 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Remove Previous Reduction <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_remove_previous_reduction }} {% if reduced_s2_nfailed_to_remove_previous_reduction > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Saturation Level <b>(*)</b></td>
+                <td>{{ reduced_s2_nunknown_saturation_level }} {% if reduced_s2_nunknown_saturation_level > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Read Saturation Level <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_read_saturation_level }} {% if reduced_s2_nfailed_to_read_saturation_level > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Moon Too Close</td>
+                <td>{{ reduced_s2_nmoon_too_close }}</td>
+                </tr>
+                <tr>
+                <td>Fraction Masked Pixels Too High</td>
+                <td>{{ reduced_s2_nfraction_masked_pixels_too_high }}</td>
+                </tr>
+                <tr>
+                <td>Sky Background Level <= 0</td>
+                <td>{{ reduced_s2_nsky_background_level_le_0 }}</td>
+                </tr>
+                <tr>
+                <td>Sky Background Level Too High</td>
+                <td>{{ reduced_s2_nsky_background_level_too_high }}</td>
+                </tr>
+                <tr>
+                <td>Sky Sigma <= 0</td>
+                <td>{{ reduced_s2_nsky_sigma_le_0 }}</td>
+                </tr>
+                <tr>
+                <td>Fraction Pixels Used For Sky Estimation Too Low</td>
+                <td>{{ reduced_s2_nfraction_pixels_used_for_sky_estimation_too_low }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Checks On QC Quantities <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_perform_checks_on_qc_quantities }} {% if reduced_s2_nfailed_to_perform_checks_on_qc_quantities > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed File Read <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_file_read }} {% if reduced_s2_nfailed_file_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Mask Saturated Pixels <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_mask_saturated_pixels }} {% if reduced_s2_nfailed_to_mask_saturated_pixels > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Straight Line Detection <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_straight_line_detection }} {% if reduced_s2_nfailed_straight_line_detection > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Updated Fraction Masked Pixels Too High</td>
+                <td>{{ reduced_s2_nupdated_fraction_masked_pixels_too_high }}</td>
+                </tr>
+                <tr>
+                <td>Failed Bad Pixel Mask Update <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_bad_pixel_mask_update }} {% if reduced_s2_nfailed_bad_pixel_mask_update > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create Working Directory <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_create_working_directory }} {% if reduced_s2_nfailed_to_create_working_directory > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Too Few Stars Detected</td>
+                <td>{{ reduced_s2_ntoo_few_stars_detected }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Star Detection <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_perform_star_detection }} {% if reduced_s2_nfailed_to_perform_star_detection > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Too Few Stars Detected After Bad Pixel Filter</td>
+                <td>{{ reduced_s2_ntoo_few_stars_detected_after_bad_pixel_filter }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Filter Star Detections For Bad Pixel Proximity <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_filter_star_detections_for_bad_pixel_proximity }} {% if reduced_s2_nfailed_to_filter_star_detections_for_bad_pixel_proximity > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Too Few Stars Detected After Cosmic Ray Filter</td>
+                <td>{{ reduced_s2_ntoo_few_stars_detected_after_cosmic_ray_filter }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Filter Star Detections For Cosmic Rays <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_filter_star_detections_for_cosmic_rays }} {% if reduced_s2_nfailed_to_filter_star_detections_for_cosmic_rays > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>PSF Ellipticity Too High</td>
+                <td>{{ reduced_s2_npsf_ellipticity_too_high }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Estimate PSF FWHM <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_estimate_psf_fwhm }} {% if reduced_s2_nfailed_to_estimate_psf_fwhm > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Write Out Intermediate Products <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_write_out_intermediate_products }} {% if reduced_s2_nfailed_to_write_out_intermediate_products > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Write Out Astrometry Configuration Files <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_write_out_astrometry_configuration_files }} {% if reduced_s2_nfailed_to_write_out_astrometry_configuration_files > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Pixel Scale Limits <b>(*)</b></td>
+                <td>{{ reduced_s2_nunknown_pixel_scale_limits }} {% if reduced_s2_nunknown_pixel_scale_limits > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Read Pixel Scale Limits <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_read_pixel_scale_limits }} {% if reduced_s2_nfailed_to_read_pixel_scale_limits > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Target Identification <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_target_identification }} {% if reduced_s2_nfailed_target_identification > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Get Target Coordinates <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_get_target_coordinates }} {% if reduced_s2_nfailed_to_get_target_coordinates > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Astrometry Command GDR2 <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_astrometry_command_gdr2 }} {% if reduced_s2_nfailed_astrometry_command_gdr2 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Astrometry Command 2MASS <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_astrometry_command_2mass }} {% if reduced_s2_nfailed_astrometry_command_2mass > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Find Astrometric Solution</td>
+                <td>{{ reduced_s2_nfailed_to_find_astrometric_solution }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Store Astrometric Solution <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_store_astrometric_solution }} {% if reduced_s2_nfailed_to_store_astrometric_solution > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>PSF FWHM Too High</td>
+                <td>{{ reduced_s2_npsf_fwhm_too_high }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Extract Astrometric Solution Properties <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_extract_astrometric_solution_properties }} {% if reduced_s2_nfailed_to_extract_astrometric_solution_properties > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Interpret wcs-rd2xy Output <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_interpret_wcs_rd2xy_output }} {% if reduced_s2_nfailed_to_interpret_wcs_rd2xy_output > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Target Outside Image</td>
+                <td>{{ reduced_s2_ntarget_outside_image }}</td>
+                </tr>
+                <tr>
+                <td>Target Too Close To Image Edge</td>
+                <td>{{ reduced_s2_ntarget_too_close_to_image_edge }}</td>
+                </tr>
+                <tr>
+                <td>Target Too Close To Bad Pixel</td>
+                <td>{{ reduced_s2_ntarget_too_close_to_bad_pixel }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Get Target Pixel Coordinates <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_get_target_pixel_coordinates }} {% if reduced_s2_nfailed_to_get_target_pixel_coordinates > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Get Stars Celestial Coordinates <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_get_stars_celestial_coordinates }} {% if reduced_s2_nfailed_to_get_stars_celestial_coordinates > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed SExtractor Rerun <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_sextractor_rerun }} {% if reduced_s2_nfailed_sextractor_rerun > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Compute Time Stamps <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_compute_time_stamps }} {% if reduced_s2_nfailed_to_compute_time_stamps > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Edit Star List <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_edit_star_list }} {% if reduced_s2_nfailed_to_edit_star_list > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Too Few Stars For Photometry</td>
+                <td>{{ reduced_s2_ntoo_few_stars_for_photometry }}</td>
+                </tr>
+                <tr>
+                <td>Failed Sky Measurement For Target</td>
+                <td>{{ reduced_s2_nfailed_sky_measurement_for_target }}</td>
+                </tr>
+                <tr>
+                <td>Failed Photometry Script <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_photometry_script }} {% if reduced_s2_nfailed_photometry_script > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Photometry Command <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_photometry_command }} {% if reduced_s2_nfailed_photometry_command > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Compute Useful Target Flux Upper Limit</td>
+                <td>{{ reduced_s2_nfailed_to_compute_useful_target_flux_upper_limit }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Compute Target Flux Upper Limit <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_compute_target_flux_upper_limit }} {% if reduced_s2_nfailed_to_compute_target_flux_upper_limit > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create PNG Files <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_create_png_files }} {% if reduced_s2_nfailed_to_create_png_files > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Clean Up <b>(*)</b></td>
+                <td>{{ reduced_s2_nfailed_to_clean_up }} {% if reduced_s2_nfailed_to_clean_up > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Reason For Failure <b>(*)</b></td>
+                <td>{{ reduced_s2_nunknown_reason_for_failure }} {% if reduced_s2_nunknown_reason_for_failure > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <b>* There should be no failures of this type</b>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Reduced Science Images - Stage 3</div>
+        <div class="panel-body">
+
+            <b>Total number of frames: {{ reduced_s3_nprocess + reduced_s3_nsuccess + reduced_s3_nfailed }}</b>
+            <br><font color="orange">To Be Processed</font> / <font color="green">Success</font> / <font color="red">Failed</font>:
+                <font color="orange">{{ reduced_s3_nprocess }}</font> / <font color="green">{{ reduced_s3_nsuccess }}</font> / <font color="red">{{ reduced_s3_nfailed }}</font>
+            <br>
+            <br>
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                <tr>
+                <th align=left>Reason For Failure</th>
+                <th align=left>Number Of Frames</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                <td>Failed At Stage 1 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_at_stage_1 }} {% if reduced_s3_nfailed_at_stage_1 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed At Stage 2</td>
+                <td>{{ reduced_s3_nfailed_at_stage_2 }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Remove Previous Reduction <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_remove_previous_reduction }} {% if reduced_s3_nfailed_to_remove_previous_reduction > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Target Identification <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_target_identification }} {% if reduced_s3_nfailed_target_identification > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Get Target Coordinates <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_get_target_coordinates }} {% if reduced_s3_nfailed_to_get_target_coordinates > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Photometry File Has Too Few Good Measurements <b>(*)</b></td>
+                <td>{{ reduced_s3_nphotometry_file_has_too_few_good_measurements }} {% if reduced_s3_nphotometry_file_has_too_few_good_measurements > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Multiple Target Entries In Photometry File <b>(*)</b></td>
+                <td>{{ reduced_s3_nmultiple_target_entries_in_photometry_file }} {% if reduced_s3_nmultiple_target_entries_in_photometry_file > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>No Target Entry In Photometry File <b>(*)</b></td>
+                <td>{{ reduced_s3_nno_target_entry_in_photometry_file }} {% if reduced_s3_nno_target_entry_in_photometry_file > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed File Read <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_file_read }} {% if reduced_s3_nfailed_file_read > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Assign Internal IDs <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_assign_internal_ids }} {% if reduced_s3_nfailed_to_assign_internal_ids > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Spatial Clustering</td>
+                <td>{{ reduced_s3_nfailed_spatial_clustering }}</td>
+                </tr>
+                <tr>
+                <td>No Spatial Clusters Formed</td>
+                <td>{{ reduced_s3_nno_spatial_clusters_formed }}</td>
+                </tr>
+                <tr>
+                <td>Failed Lightcurve Consistency Check <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_lightcurve_consistency_check }} {% if reduced_s3_nfailed_lightcurve_consistency_check > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Find Any Standard Stars</td>
+                <td>{{ reduced_s3_nfailed_to_find_any_standard_stars }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create Standard Star Subcatalogue <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_standard_star_subcatalogue }} {% if reduced_s3_nfailed_to_create_standard_star_subcatalogue > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed While Standard Star Matching <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_while_standard_star_matching }} {% if reduced_s3_nfailed_while_standard_star_matching > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create Output Directory <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_output_directory }} {% if reduced_s3_nfailed_to_create_output_directory > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Fit SEx</td>
+                <td>{{ reduced_s3_nfailed_fit_sex }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Fit SEx <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_perform_fit_sex }} {% if reduced_s3_nfailed_to_perform_fit_sex > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Calibrate SEx <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_calibrate_sex }} {% if reduced_s3_nfailed_to_calibrate_sex > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Plot Lightcurve SEx <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_plot_lightcurve_sex }} {% if reduced_s3_nfailed_to_plot_lightcurve_sex > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create RMS Diagram SEx <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_rms_diagram_sex }} {% if reduced_s3_nfailed_to_create_rms_diagram_sex > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Fit FAP 0p5</td>
+                <td>{{ reduced_s3_nfailed_fit_fap_0p5 }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Fit FAP 0p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_perform_fit_fap_0p5 }} {% if reduced_s3_nfailed_to_perform_fit_fap_0p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Calibrate FAP 0p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_calibrate_fap_0p5 }} {% if reduced_s3_nfailed_to_calibrate_fap_0p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Plot Lightcurve FAP 0p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_plot_lightcurve_fap_0p5 }} {% if reduced_s3_nfailed_to_plot_lightcurve_fap_0p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create RMS Diagram FAP 0p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_rms_diagram_fap_0p5 }} {% if reduced_s3_nfailed_to_create_rms_diagram_fap_0p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Fit FAP 0p75</td>
+                <td>{{ reduced_s3_nfailed_fit_fap_0p75 }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Fit FAP 0p75 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_perform_fit_fap_0p75 }} {% if reduced_s3_nfailed_to_perform_fit_fap_0p75 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Calibrate FAP 0p75 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_calibrate_fap_0p75 }} {% if reduced_s3_nfailed_to_calibrate_fap_0p75 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Plot Lightcurve FAP 0p75 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_plot_lightcurve_fap_0p75 }} {% if reduced_s3_nfailed_to_plot_lightcurve_fap_0p75 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create RMS Diagram FAP 0p75 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_rms_diagram_fap_0p75 }} {% if reduced_s3_nfailed_to_create_rms_diagram_fap_0p75 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Fit FAP 1p0</td>
+                <td>{{ reduced_s3_nfailed_fit_fap_1p0 }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Fit FAP 1p0 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_perform_fit_fap_1p0 }} {% if reduced_s3_nfailed_to_perform_fit_fap_1p0 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Calibrate FAP 1p0 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_calibrate_fap_1p0 }} {% if reduced_s3_nfailed_to_calibrate_fap_1p0 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Plot Lightcurve FAP 1p0 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_plot_lightcurve_fap_1p0 }} {% if reduced_s3_nfailed_to_plot_lightcurve_fap_1p0 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create RMS Diagram FAP 1p0 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_rms_diagram_fap_1p0 }} {% if reduced_s3_nfailed_to_create_rms_diagram_fap_1p0 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Fit FAP 1p5</td>
+                <td>{{ reduced_s3_nfailed_fit_fap_1p5 }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Fit FAP 1p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_perform_fit_fap_1p5 }} {% if reduced_s3_nfailed_to_perform_fit_fap_1p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Calibrate FAP 1p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_calibrate_fap_1p5 }} {% if reduced_s3_nfailed_to_calibrate_fap_1p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Plot Lightcurve FAP 1p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_plot_lightcurve_fap_1p5 }} {% if reduced_s3_nfailed_to_plot_lightcurve_fap_1p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create RMS Diagram FAP 1p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_rms_diagram_fap_1p5 }} {% if reduced_s3_nfailed_to_create_rms_diagram_fap_1p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Fit FAP 2p0</td>
+                <td>{{ reduced_s3_nfailed_fit_fap_2p0 }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Fit FAP 2p0 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_perform_fit_fap_2p0 }} {% if reduced_s3_nfailed_to_perform_fit_fap_2p0 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Calibrate FAP 2p0 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_calibrate_fap_2p0 }} {% if reduced_s3_nfailed_to_calibrate_fap_2p0 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Plot Lightcurve FAP 2p0 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_plot_lightcurve_fap_2p0 }} {% if reduced_s3_nfailed_to_plot_lightcurve_fap_2p0 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create RMS Diagram FAP 2p0 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_rms_diagram_fap_2p0 }} {% if reduced_s3_nfailed_to_create_rms_diagram_fap_2p0 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Fit FAP 2p5</td>
+                <td>{{ reduced_s3_nfailed_fit_fap_2p5 }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Fit FAP 2p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_perform_fit_fap_2p5 }} {% if reduced_s3_nfailed_to_perform_fit_fap_2p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Calibrate FAP 2p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_calibrate_fap_2p5 }} {% if reduced_s3_nfailed_to_calibrate_fap_2p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Plot Lightcurve FAP 2p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_plot_lightcurve_fap_2p5 }} {% if reduced_s3_nfailed_to_plot_lightcurve_fap_2p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create RMS Diagram FAP 2p5 <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_rms_diagram_fap_2p5 }} {% if reduced_s3_nfailed_to_create_rms_diagram_fap_2p5 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed Fit MAP</td>
+                <td>{{ reduced_s3_nfailed_fit_map }}</td>
+                </tr>
+                <tr>
+                <td>Failed To Perform Fit MAP <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_perform_fit_map }} {% if reduced_s3_nfailed_to_perform_fit_map > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Calibrate MAP <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_calibrate_map }} {% if reduced_s3_nfailed_to_calibrate_map > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Plot Lightcurve MAP <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_plot_lightcurve_map }} {% if reduced_s3_nfailed_to_plot_lightcurve_map > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create RMS Diagram MAP <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_rms_diagram_map }} {% if reduced_s3_nfailed_to_create_rms_diagram_map > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Write Out Target LC <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_write_out_target_lc }} {% if reduced_s3_nfailed_to_write_out_target_lc > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Write Out All LCs <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_write_out_all_lcs }} {% if reduced_s3_nfailed_to_write_out_all_lcs > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Make Diagnostic Plot <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_make_diagnostic_plot }} {% if reduced_s3_nfailed_to_make_diagnostic_plot > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed To Create PNG File <b>(*)</b></td>
+                <td>{{ reduced_s3_nfailed_to_create_png_file }} {% if reduced_s3_nfailed_to_create_png_file > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Unknown Reason For Failure <b>(*)</b></td>
+                <td>{{ reduced_s3_nunknown_reason_for_failure }} {% if reduced_s3_nunknown_reason_for_failure > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <b>* There should be no failures of this type</b>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Reduced Science Images - Stage 4</div>
+        <div class="panel-body">
+
+            <b>Total number of frames: {{ reduced_s4_nprocess + reduced_s4_nsuccess + reduced_s4_nfailed }}</b>
+            <br><font color="orange">To Be Processed</font> / <font color="green">Success</font> / <font color="red">Failed</font>:
+                <font color="orange">{{ reduced_s4_nprocess }}</font> / <font color="green">{{ reduced_s4_nsuccess }}</font> / <font color="red">{{ reduced_s4_nfailed }}</font>
+            <br>
+            <br>
+
+            <table class="table table-condensed table-bordered">
+                <thead>
+                <tr>
+                <th align=left>Reason For Failure</th>
+                <th align=left>Number Of Frames</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                <td>Failed At Stage 1 <b>(*)</b></td>
+                <td>{{ reduced_s4_nfailed_at_stage_1 }} {% if reduced_s4_nfailed_at_stage_1 > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+                <tr>
+                <td>Failed At Stage 2</td>
+                <td>{{ reduced_s4_nfailed_at_stage_2 }}</td>
+                </tr>
+                <tr>
+                <td>Failed At Stage 3</td>
+                <td>{{ reduced_s4_nfailed_at_stage_3 }}</td>
+                </tr>
+                <tr>
+                <td>Unknown Reason For Failure <b>(*)</b></td>
+                <td>{{ reduced_s4_nunknown_reason_for_failure }} {% if reduced_s4_nunknown_reason_for_failure > 0 %}<font color="Red"><b>... WARNING: Should be ZERO!</b></font>{% endif %}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <b>* There should be no failures of this type</b>
+
+        </div>
+    </div>
+
+
+    <footer>
+        <hr>
+        Web page generation performance:
+        <br>Data read: {{ t1 }} s
+        <br>Data analysis: {{ t2 }} s
+        <br>
+        <hr>
+        <p><b>X-ray Binary New Early Warning System</b> (XB-NEWS; P.I.: <b>Dave Russell</b>) - Abu Dhabi, UAE</p>
+        <p>Created and programmed by <b><a href="http://www.danidl.co.uk/">Daniel Bramich</a></b> (dan.bramich@hotmail.co.uk)</p>
+        <hr>
+    </footer>
+</div>
+
+
+<!-- Javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="../static/js/spin.min.js"></script>
+<script src="../static/js/ladda.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="//code.jquery.com/jquery-1.11.3.min.js"><\/script>')</script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/jquery.navgoco.js"></script>
+<script src="../static/js/bootstrap-datepicker.js"></script>
+<script src="../static/js/main.js"></script>
+
+</body>
+</html>

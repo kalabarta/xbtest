@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>XB-NEWS: X-ray Binary New Early Warning System</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/datepicker.css">
+    <link rel="stylesheet" href="../static/css/ladda-themeless.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <!--Include your brand here-->
+        <a class="navbar-brand" href="#">Target Download-Matrix</a>
+    </div>
+</div>
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <div class="col-lg-6">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <table class="table table-condensed table-bordered">
+        <tbody>
+            <tr>
+            <td>Go to:</td>
+            <td>
+            {% if running == 1 %}
+                Pipeline Controller: <font color="Lime">Running</font>
+            {% else %}
+                <font color="Red"><h2>ATTENTION: The pipeline controller is NOT RUNNING!</h2></font>
+            {% endif %}
+            </td>
+            </tr>
+            <tr>
+            <td><a href="..">Home Page</a></td>
+            <td><a href="../pipeline">Pipeline Overview</a></td>
+            </tr>
+            <tr>
+            <td><a href="../targets">Target List</a></td>
+            <td><a href="../pipeline/failures">Pipeline Failures</a></td>
+            </tr>
+            <tr>
+            <td>Target Download-Matrix</td>
+            <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Example row of columns -->
+
+    <header><h2>Target Download-Matrix:</h2></header>
+
+    <br>This page displays the download progress bars for each target, organised into up to four tables for regular,
+        non-regular, inactive, and unrecognised targets. Unrecognised targets are those targets that are listed in the target
+        download-matrix file but are not listed in the target list file. Ideally these targets should be listed in the target
+        list file as inactive targets since their presence in the target download-matrix file implies that associated data
+        exist in the local archive.
+    <br>
+    <br>Each target has three download progress bars:
+    <br>
+    <br>
+    <ul>
+    <li><b>Top:</b> This progress bar is for proprietary data and it corresponds to LCO archive queries that have been run for
+                    any date range that is at least 72 hours prior to the UTC date at query execution. The 72 hour delay is
+                    implemented to allow plenty of time for reduced science images and associated master calibration files to
+                    have been posted to the LCO archive.</li>
+    <li><b>Middle:</b> This progress bar is also for proprietary data and it corresponds to LCO archive queries that have been
+                       run for any date range that is at least 60 days prior to the UTC date at query execution. These queries
+                       constitute a "safety-net" for cases where data have been posted to the LCO archive after a considerably
+                       longer delay than usual, or if (for example) the person running the XB-NEWS pipeline did not have permission
+                       to download proprietary data at the time of the original query for proprietary data. The latter can happen
+                       if the person in question was not added to an observing proposal before the beginning of an observation
+                       semester.</li>
+    <li><b>Bottom:</b> This progress bar is for public data and it corresponds to LCO archive queries that have been run for
+                       any date range that is at least 366 days and 1 hour prior to the UTC date at query execution.</li>
+    </ul>
+
+    <br>In each progress bar:
+    <br>
+    <br>
+    <ul>
+    <li><b><font color="Red">Red</font></b> corresponds to date ranges for which the LCO archive has yet to be queried for
+        relevant data at the correct moment.</li>
+    <li><b><font color="Lime">Green</font></b> corresponds to date ranges for which the LCO archive was successfully
+        queried at the correct moment and for which any relevant data were successfully downloaded.</li>
+    </ul>
+    <br>
+
+    <table class="table table-condensed table-bordered">
+        <tbody>
+            <tr>
+            <td>The current UTC date is:</td>
+            <td>{{ utc_now_str }}</td>
+            </tr>
+            <tr>
+            <td>The current UTC date minus 72 hours is:</td>
+            <td>{{ utc_m72_str }}</td>
+            </tr>
+            <tr>
+            <td>The safety-net UTC date is:</td>
+            <td>{{ utc_safety_str }}</td>
+            </tr>
+            <tr>
+            <td>The UTC date prior to which all LCO archive data are public is:</td>
+            <td>{{ utc_public_str }}</td>
+            </tr>
+            <tr>
+            <td>The earliest UTC date for data stored in the LCO archive is:</td>
+            <td>{{ archive_start_utc_str }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    {% if nregular_targets > 0 %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">Regular Targets</div>
+
+            <br><img src="../static/data/website.plots/progress.bars.regular.png">
+
+        </div>
+    {% endif %}
+
+
+    {% if nnonregular_targets > 0 %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">Non-Regular Targets</div>
+
+            <br><img src="../static/data/website.plots/progress.bars.nonregular.png">
+
+        </div>
+    {% endif %}
+
+
+    {% if ninactive_targets > 0 %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">Inactive Targets</div>
+
+            <br><img src="../static/data/website.plots/progress.bars.inactive.png">
+
+        </div>
+    {% endif %}
+
+
+    {% if nunrecognised_targets > 0 %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">Unrecognised Targets</div>
+
+            <br><img src="../static/data/website.plots/progress.bars.unrecognised.png">
+
+        </div>
+    {% endif %}
+
+
+    <footer>
+        <hr>
+        Web page generation performance:
+        <br>Data read: {{ t1 }} s
+        <br>Data analysis: {{ t2 }} s
+        <br>
+        <hr>
+        <p><b>X-ray Binary New Early Warning System</b> (XB-NEWS; P.I.: <b>Dave Russell</b>) - Abu Dhabi, UAE</p>
+        <p>Created and programmed by <b><a href="http://www.danidl.co.uk/">Daniel Bramich</a></b> (dan.bramich@hotmail.co.uk)</p>
+        <hr>
+    </footer>
+</div>
+
+
+<!-- Javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="../static/js/spin.min.js"></script>
+<script src="../static/js/ladda.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="//code.jquery.com/jquery-1.11.3.min.js"><\/script>')</script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/jquery.navgoco.js"></script>
+<script src="../static/js/bootstrap-datepicker.js"></script>
+<script src="../static/js/main.js"></script>
+
+</body>
+</html>
