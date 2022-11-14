@@ -64,153 +64,141 @@
 
     <!-- Example row of columns -->
 
-    <header><h2>Target: <a href="../../../../targets/individual/{{ target_name_with_underscores }}">{{ target_name }}</a> - Single Reduction Level And Pipeline Configuration</h2></header>
+    <header><h2>Target: <a TESTING SOURCE </a> - Single Reduction Level And Pipeline Configuration</h2></header>
 
-    {% if target == None %}
+    <header><h3>Summary ({{ target_type }} Target):</h3></header>
 
-        <hr>
-        <header><h3>Summary (Unrecognised Target):</h3></header>
-
-        <br>This target is not in the <a href="../../../../targets">target list</a> ...
-        <br>
-
-    {% else %}
-
-        <hr>
-        <header><h3>Summary ({{ target_type }} Target):</h3></header>
-
-        <br>
-        <table class="table table-condensed table-bordered">
-            <tbody>
-                <tr>
-                <td><b>Alternative Name:</b></td>
-                <td><nobr>{{ target["alternative_name"] }}</nobr></td>
-                <td><b>SIMBAD Link:</b></td>
-                {% if target["SIMBAD_link"][0:4] == 'http' %}
-                    <td><a href="{{ target["SIMBAD_link"] }}">Link</a></td>
-                {% else %}
-                    <td>-</td>
-                {% endif %}
-                </tr>
-                <tr>
-                <td><b>RA (J2000):</b></td>
-                <td>{{ target["ra"] }}</td>
-                <td><b>Dec (J2000):</b></td>
-                <td>{{ target["dec"] }}</td>
-                </tr>
-                <tr>
-                <td><b>Type:</b></td>
-                <td><nobr>{{ target["type"] }}</nobr></td>
-                <td><b>Cadence (h):</b></td>
-                <td>{{ target["cadence"] }}</td>
-                </tr>
-                <tr>
-                <td><b>Filters:</b></td>
-                <td>{{ target["filters"] }}</td>
-                <td><b>Exposure Time (s):</b></td>
-                <td>{{ target["exptime"] }}</td>
-                </tr>
-                <tr>
-                <td><b>Comments:</b></td>
-                <td>{{ target["comments"] }}</td>
-                <td></td>
-                <td></td>
-                </tr>
-            </tbody>
-        </table>
-
-
-        <hr>
-        <header><h3>Lightcurves For This Configuration:</h3></header>
-
-        <br>
-        <table class="table table-condensed table-bordered">
-            <thead>
+    <br>
+    <table class="table table-condensed table-bordered">
+        <tbody>
             <tr>
-            <th align=left>Site</th>
-            <th align=left>Telescope</th>
-            <th align=left>Instrument</th>
-            <th align=left>Filter</th>
-            <th align=left>Reduction Level</th>
-            <th align=left>Pipeline</th>
-            <th align=left>Binning</th>
+            <td><b>Alternative Name:</b></td>
+            <td><nobr>{{ target["alternative_name"] }}</nobr></td>
+            <td><b>SIMBAD Link:</b></td>
+            {% if target["SIMBAD_link"][0:4] == 'http' %}
+                <td><a href="{{ target["SIMBAD_link"] }}">Link</a></td>
+            {% else %}
+                <td>-</td>
+            {% endif %}
             </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                <td>Any</td>
-                <td>Any</td>
-                <td>Any</td>
-                <td>Any</td>
-                <td>{{ rlevel }}</td>
-                <td>{{ pipeline }}</td>
-                <td>Any</td>
-                </tr>
-            </tbody>
-
-        </table>
-
-
-        <table class="table table-condensed table-bordered">
-            <tbody>
-                <tr>
-                <td><nobr><b>Concatenated Target Lightcurve (ASCII):</b></nobr></td>
-                <td><a href="../../../../static/data/{{ key_lc_txt_path }}">{{ config_str + '.target.lc.txt' }}</a></td>
-                </tr>
-                <tr>
-                <td><nobr><b>Concatenated Target Lightcurve (FITS):</b></nobr></td>
-                <td><a href="../../../../static/data/{{ key_lc_fits_path }}">{{ config_str + '.target.lc.fits' }}</a></td>
-                </tr>
-            </tbody>
-        </table>
+            <tr>
+            <td><b>RA (J2000):</b></td>
+            <td>{{ target["ra"] }}</td>
+            <td><b>Dec (J2000):</b></td>
+            <td>{{ target["dec"] }}</td>
+            </tr>
+            <tr>
+            <td><b>Type:</b></td>
+            <td><nobr>{{ target["type"] }}</nobr></td>
+            <td><b>Cadence (h):</b></td>
+            <td>{{ target["cadence"] }}</td>
+            </tr>
+            <tr>
+            <td><b>Filters:</b></td>
+            <td>{{ target["filters"] }}</td>
+            <td><b>Exposure Time (s):</b></td>
+            <td>{{ target["exptime"] }}</td>
+            </tr>
+            <tr>
+            <td><b>Comments:</b></td>
+            <td>{{ target["comments"] }}</td>
+            <td></td>
+            <td></td>
+            </tr>
+       </tbody>
+    </table>
 
 
-        Only standard magnitudes for target detections are plotted.
-        <br>Each colour represents a different observing configuration (site, telescope, instrument, binning).
-        <br>Only lightcurve data points for the following filters (LCO names) are plotted, using the symbols indicated:
-        {% for item in filters_legend %}
-            <br>{{ item }}
-        {% endfor %}
-        {% if plot_lc_sex_path != None %}
-            <img src="../../../../static/data/{{ plot_lc_sex_path }}">
-        {% endif %}
-        {% if plot_lc_fap_0p5_path != None %}
-            <img src="../../../../static/data/{{ plot_lc_fap_0p5_path }}">
-        {% endif %}
-        {% if plot_lc_fap_0p75_path != None %}
-            <img src="../../../../static/data/{{ plot_lc_fap_0p75_path }}">
-        {% endif %}
-        {% if plot_lc_fap_1p0_path != None %}
-            <img src="../../../../static/data/{{ plot_lc_fap_1p0_path }}">
-        {% endif %}
-        {% if plot_lc_fap_1p5_path != None %}
-            <img src="../../../../static/data/{{ plot_lc_fap_1p5_path }}">
-        {% endif %}
-        {% if plot_lc_fap_2p0_path != None %}
-            <img src="../../../../static/data/{{ plot_lc_fap_2p0_path }}">
-        {% endif %}
-        {% if plot_lc_fap_2p5_path != None %}
-            <img src="../../../../static/data/{{ plot_lc_fap_2p5_path }}">
-        {% endif %}
-        {% if plot_lc_map_path != None %}
-            <img src="../../../../static/data/{{ plot_lc_map_path }}">
-        {% endif %}
+    <hr>
+    <header><h3>Lightcurves For This Configuration:</h3></header>
 
+    <br>
+    <table class="table table-condensed table-bordered">
+        <thead>
+        <tr>
+        <th align=left>Site</th>
+        <th align=left>Telescope</th>
+        <th align=left>Instrument</th>
+        <th align=left>Filter</th>
+        <th align=left>Reduction Level</th>
+        <th align=left>Pipeline</th>
+        <th align=left>Binning</th>
+        </tr>
+        </thead>
+         <tbody>
+            <tr>
+            <td>Any</td>
+            <td>Any</td>
+            <td>Any</td>
+            <td>Any</td>
+            <td>{{ rlevel }}</td>
+            <td>{{ pipeline }}</td>
+            <td>Any</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+
+    <table class="table table-condensed table-bordered">
+        <tbody>
+            <tr>
+            <td><nobr><b>Concatenated Target Lightcurve (ASCII):</b></nobr></td>
+            <td><a href="../../../../static/data/{{ key_lc_txt_path }}">{{ config_str + '.target.lc.txt' }}</a></td>
+            </tr>
+            <tr>
+            <td><nobr><b>Concatenated Target Lightcurve (FITS):</b></nobr></td>
+            <td><a href="../../../../static/data/{{ key_lc_fits_path }}">{{ config_str + '.target.lc.fits' }}</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    Only standard magnitudes for target detections are plotted.
+    <br>Each colour represents a different observing configuration (site, telescope, instrument, binning).
+    <br>Only lightcurve data points for the following filters (LCO names) are plotted, using the symbols indicated:
+    {% for item in filters_legend %}
+        <br>{{ item }}
+    {% endfor %}
+    {% if plot_lc_sex_path != None %}
+        <img src="../../../../static/data/{{ plot_lc_sex_path }}">
+    {% endif %}
+    {% if plot_lc_fap_0p5_path != None %}
+        <img src="../../../../static/data/{{ plot_lc_fap_0p5_path }}">
+    {% endif %}
+    {% if plot_lc_fap_0p75_path != None %}
+        <img src="../../../../static/data/{{ plot_lc_fap_0p75_path }}">
+    {% endif %}
+    {% if plot_lc_fap_1p0_path != None %}
+        <img src="../../../../static/data/{{ plot_lc_fap_1p0_path }}">
+    {% endif %}
+    {% if plot_lc_fap_1p5_path != None %}
+        <img src="../../../../static/data/{{ plot_lc_fap_1p5_path }}">
+    {% endif %}
+    {% if plot_lc_fap_2p0_path != None %}
+        <img src="../../../../static/data/{{ plot_lc_fap_2p0_path }}">
+    {% endif %}
+    {% if plot_lc_fap_2p5_path != None %}
+        <img src="../../../../static/data/{{ plot_lc_fap_2p5_path }}">
+    {% endif %}
+    {% if plot_lc_map_path != None %}
+        <img src="../../../../static/data/{{ plot_lc_map_path }}">
     {% endif %}
 
+{% endif %}
 
-    <footer>
-        <hr>
-        Web page generation performance:
-        <br>Data read: {{ t1 }} s
-        <br>Data analysis: {{ t2 }} s
-        <br>
-        <hr>
-        <p><b>X-ray Binary New Early Warning System</b> (XB-NEWS; P.I.: <b>Dave Russell</b>) - Abu Dhabi, UAE</p>
-        <p>Created and programmed by <b><a href="http://www.danidl.co.uk/">Daniel Bramich</a></b> (dan.bramich@hotmail.co.uk)</p>
-        <hr>
-    </footer>
+
+<footer>
+    <hr>
+    Web page generation performance:
+    <br>Data read: {{ t1 }} s
+    <br>Data analysis: {{ t2 }} s
+    <br>
+    <hr>
+    <p><b>X-ray Binary New Early Warning System</b> (XB-NEWS; P.I.: <b>Dave Russell</b>) - Abu Dhabi, UAE</p>
+    <p>Created and programmed by <b><a href="http://www.danidl.co.uk/">Daniel Bramich</a></b> (dan.bramich@hotmail.co.uk)</p>
+    <hr>
+</footer>
 </div>
 
 
